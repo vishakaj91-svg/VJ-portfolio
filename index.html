@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vjportfolio</title>
+<meta name="description" content="Vishakhaa Jain — Founder & COO at Jobzio. Recruitment, HR, sales, and entrepreneurial execution, built around trust and human understanding.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=fraunces@400,500,600,700,900&f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --ink: #1A1410;
+    --bone: #FBF6EE;
+    --bone-2: #F1E9DA;
+    --magenta: #8B1E5C;
+    --magenta-deep: #6E1547;
+    --teal: #1F6F7A;
+    --clay: #D9876A;
+    --jobzio-red: #D8232A;
+  }
+
+  html, body {
+    background: var(--bone);
+    color: var(--ink);
+    font-family: 'General Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; font-variation-settings: "SOFT" 50, "WONK" 0; }
+  .font-body { font-family: 'General Sans', system-ui, sans-serif; }
+
+  /* Grain overlay — adds tactile film texture */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    z-index: 90;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* Vertical sidebar text */
+  .sidebar-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 0.45em;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* Marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 50s linear infinite;
+    will-change: transform;
+  }
+
+  /* Hero entrance stagger */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.25s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.45s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.65s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.85s; }
+
+  /* Scroll reveals */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(0.16,1,0.3,1), transform .9s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* CTA — primary */
+  .btn-primary {
+    background: var(--magenta);
+    color: var(--bone);
+    transition: transform .35s cubic-bezier(0.16,1,0.3,1), background .35s, box-shadow .35s;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .btn-primary:hover { background: var(--magenta-deep); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .btn-primary:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+  .btn-primary:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+  /* CTA — ghost */
+  .btn-ghost {
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    transition: background .35s, color .35s, transform .35s, box-shadow .35s;
+  }
+  .btn-ghost:hover { background: var(--ink); color: var(--bone); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--magenta); }
+  .btn-ghost:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--magenta); }
+  .btn-ghost:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
+
+  /* Underlined nav links */
+  a.u-link {
+    position: relative;
+    display: inline-block;
+    padding: 2px 0;
+  }
+  a.u-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: currentColor;
+    transform: scaleX(1);
+    transform-origin: right;
+    transition: transform .55s cubic-bezier(0.16,1,0.3,1);
+  }
+  a.u-link:hover::after { transform: scaleX(0); }
+  a.u-link:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
+
+  /* Capability tile */
+  .tile {
+    background: var(--bone);
+    border: 1.5px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s;
+  }
+  .tile:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+
+  /* Project card */
+  .project-card {
+    border: 1.5px solid var(--ink);
+    background: var(--bone);
+    transition: transform .4s cubic-bezier(0.16,1,0.3,1), box-shadow .4s;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .project-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+  .project-accent { height: 8px; }
+
+  /* Big-number stat */
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    font-variation-settings: "SOFT" 100;
+  }
+
+  /* Section number tag */
+  .section-tag {
+    font-family: 'General Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* TODO marker pill */
+  .todo {
+    display: inline-block;
+    background: repeating-linear-gradient(45deg, rgba(216,35,42,0.12), rgba(216,35,42,0.12) 6px, transparent 6px, transparent 12px);
+    border: 1px dashed var(--jobzio-red);
+    color: var(--jobzio-red);
+    font-family: 'General Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  /* Hero portrait warm overlay */
+  .portrait-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(26, 20, 16, 0.45) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .portrait-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(217, 135, 106, 0.18), rgba(31, 111, 122, 0.08));
+    mix-blend-mode: multiply;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Soap & crochet placeholder visuals */
+  .placeholder-soap {
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255,255,255,0.4), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(139,30,92,0.25), transparent 50%),
+      linear-gradient(135deg, #E8B89B 0%, #D9876A 50%, #B86844 100%);
+  }
+  .placeholder-crochet {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.3), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(26,20,16,0.2), transparent 40%),
+      linear-gradient(135deg, #4D9098 0%, #1F6F7A 60%, #144E55 100%);
+  }
+  .placeholder-grid {
+    background-image:
+      linear-gradient(rgba(251, 246, 238, 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 246, 238, 0.18) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* How-I-work step */
+  .step-number {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--magenta);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
+    .stagger > *, .reveal { opacity: 1; transform: none; animation: none; transition: none; }
+  }
+
+  /* Suppress tailwind CDN dev warning visually */
+  body > [class*="cdn"] { display: none !important; }
+
+  /* Selection */
+  ::selection { background: var(--magenta); color: var(--bone); }
+</style>
+</head>
+<body class="overflow-x-hidden">
+
+  <!-- Vertical fixed sidebar (desktop only) -->
+  <aside aria-hidden="true" class="hidden lg:flex fixed left-5 top-0 h-screen z-40 items-center pointer-events-none">
+    <span class="sidebar-text" style="color: rgba(26,20,16,0.55);">People · Growth · Trust · Execution</span>
+  </aside>
+
+  <!-- Top nav -->
+  <header class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 lg:px-20 py-6 backdrop-blur-[2px]" style="background: rgba(251, 246, 238, 0.65);">
+    <a href="#top" class="font-display italic text-base lg:text-lg" style="color: var(--ink);">Vishakhaa Jain</a>
+    <nav class="hidden md:flex gap-8 text-[11px] uppercase tracking-[0.3em] font-medium">
+      <a href="#work" class="u-link">Work</a>
+      <a href="#about" class="u-link">About</a>
+      <a href="#connect" class="u-link">Connect</a>
+    </nav>
+  </header>
+
+  <!-- 1. HERO -->
+  <section id="top" class="relative min-h-screen pt-28 lg:pt-32 pb-16 px-6 lg:px-24">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end stagger">
+
+      <!-- Portrait column -->
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="portrait-wrap aspect-[3/4] max-w-md lg:max-w-none">
+          <img src="Snapchat-1677432807.jpg" alt="Portrait of Vishakhaa Jain" class="w-full h-full object-cover" loading="eager" decoding="async">
+        </div>
+        <div class="flex justify-between items-baseline mt-4 max-w-md lg:max-w-none">
+          <p class="section-tag" style="color: rgba(26,20,16,0.6);">— South Goa, India</p>
+          <p class="font-display italic text-sm" style="color: var(--teal);">est. since always</p>
+        </div>
+      </div>
+
+      <!-- Headline column -->
+      <div class="lg:col-span-7 order-1 lg:order-2">
+        <p class="section-tag mb-8" style="color: var(--magenta);">— People &amp; Growth Professional</p>
+        <h1 class="font-display font-medium leading-[0.92] tracking-[-0.035em]" style="font-size: clamp(2.75rem, 8.5vw, 7.5rem);">
+          I help businesses<br>
+          grow <em class="italic font-normal" style="color: var(--magenta); font-variation-settings: 'SOFT' 100;">through people.</em>
+        </h1>
+        <p class="font-body text-lg lg:text-xl leading-[1.6] mt-8 max-w-[52ch]" style="color: rgba(26,20,16,0.82);">
+          Recruitment, HR, sales, and entrepreneurial execution — built around trust and human understanding.
+        </p>
+        <div class="flex flex-wrap gap-4 mt-10">
+          <a href="#work" class="btn-primary inline-flex items-center gap-3 px-7 py-4 text-[12px] uppercase tracking-[0.25em] font-medium">
+            See how I work
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="#connect" class="btn-ghost inline-flex items-center gap-3 px-7 py-4 text-[12px] uppercase tracking-[0.25em] font-medium">
+            Get in touch
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="hidden lg:flex absolute bottom-8 right-24 items-center gap-3 text-[10px] uppercase tracking-[0.3em]" style="color: rgba(26,20,16,0.55);">
+      <span>Scroll</span>
+      <span class="block w-12 h-px" style="background: var(--ink);"></span>
+    </div>
+  </section>
+
+  <!-- 2. MARQUEE -->
+  <section aria-hidden="true" class="border-y overflow-hidden py-6" style="border-color: rgba(26,20,16,0.15);">
+    <div class="marquee-track">
+      <div class="flex items-center gap-12 px-6 whitespace-nowrap font-display italic text-3xl lg:text-5xl" style="color: rgba(26,20,16,0.75);">
+        <span>Recruitment</span><span style="color: var(--magenta);">✦</span>
+        <span>HR</span><span style="color: var(--magenta);">✦</span>
+        <span>Sales</span><span style="color: var(--magenta);">✦</span>
+        <span>Entrepreneurship</span><span style="color: var(--magenta);">✦</span>
+        <span>Client Relations</span><span style="color: var(--magenta);">✦</span>
+        <span>People Growth</span><span style="color: var(--magenta);">✦</span>
+      </div>
+      <div class="flex items-center gap-12 px-6 whitespace-nowrap font-display italic text-3xl lg:text-5xl" style="color: rgba(26,20,16,0.75);">
+        <span>Recruitment</span><span style="color: var(--magenta);">✦</span>
+        <span>HR</span><span style="color: var(--magenta);">✦</span>
+        <span>Sales</span><span style="color: var(--magenta);">✦</span>
+        <span>Entrepreneurship</span><span style="color: var(--magenta);">✦</span>
+        <span>Client Relations</span><span style="color: var(--magenta);">✦</span>
+        <span>People Growth</span><span style="color: var(--magenta);">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. WHAT I BRING -->
+  <section id="about" class="py-16 lg:py-36 px-6 lg:px-24">
+    <div class="grid lg:grid-cols-12 gap-8 mb-10 lg:mb-24 reveal">
+      <div class="lg:col-span-4">
+        <p class="section-tag" style="color: var(--teal);">— 02 · The Work</p>
+        <p class="font-body text-sm leading-relaxed mt-6 max-w-[34ch]" style="color: rgba(26,20,16,0.7);">
+          Six capabilities, one operating system. I move between people and business — adapting the toolkit to whatever the moment needs.
+        </p>
+      </div>
+      <div class="lg:col-span-8">
+        <h2 class="font-display font-medium leading-[0.95] tracking-[-0.025em]" style="font-size: clamp(2.5rem, 6.5vw, 5.5rem);">
+          What I bring<br>
+          to <em class="italic font-normal" style="color: var(--teal);">the table.</em>
+        </h2>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 reveal">
+
+      <!-- 01 HR Understanding -->
+      <div class="tile p-8 lg:p-10 flex flex-col gap-6 min-h-[220px] lg:min-h-[280px]">
+        <div class="flex justify-between items-start">
+          <span class="font-display italic text-3xl" style="color: var(--magenta);">01</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="11" r="4"/>
+            <circle cx="9" cy="14" r="3"/>
+            <circle cx="27" cy="14" r="3"/>
+            <path d="M11 27c0-4 3-7 7-7s7 3 7 7"/>
+            <path d="M3 27c0-3 2-5 5-5"/>
+            <path d="M33 27c0-3-2-5-5-5"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight">HR Understanding</h3>
+        <p class="font-body text-sm leading-relaxed mt-auto" style="color: rgba(26,20,16,0.75);">
+          Reading roles, teams, and culture the way they actually are — not the way the org chart claims.
+        </p>
+      </div>
+
+      <!-- 02 Sales Mindset -->
+      <div class="tile p-8 lg:p-10 flex flex-col gap-6 min-h-[220px] lg:min-h-[280px]">
+        <div class="flex justify-between items-start">
+          <span class="font-display italic text-3xl" style="color: var(--magenta);">02</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 28L13 18L20 24L31 9"/>
+            <path d="M24 9h7v7"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight">Sales Mindset</h3>
+        <p class="font-body text-sm leading-relaxed mt-auto" style="color: rgba(26,20,16,0.75);">
+          Hitting targets is a craft. Listening, framing value, and closing without pressure — repeatably.
+        </p>
+      </div>
+
+      <!-- 03 Entrepreneurial Adaptability -->
+      <div class="tile p-8 lg:p-10 flex flex-col gap-6 min-h-[220px] lg:min-h-[280px]">
+        <div class="flex justify-between items-start">
+          <span class="font-display italic text-3xl" style="color: var(--magenta);">03</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 30 L18 18 L28 22 L31 8"/>
+            <circle cx="5" cy="30" r="1.5" fill="currentColor"/>
+            <circle cx="18" cy="18" r="1.5" fill="currentColor"/>
+            <circle cx="28" cy="22" r="1.5" fill="currentColor"/>
+            <circle cx="31" cy="8" r="2"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight">Entrepreneurial Adaptability</h3>
+        <p class="font-body text-sm leading-relaxed mt-auto" style="color: rgba(26,20,16,0.75);">
+          Built my own ventures from zero. Teaching → sales → HR → business → recruitment — momentum, not pivots.
+        </p>
+      </div>
+
+      <!-- 04 Relationship-Building -->
+      <div class="tile p-8 lg:p-10 flex flex-col gap-6 min-h-[220px] lg:min-h-[280px]">
+        <div class="flex justify-between items-start">
+          <span class="font-display italic text-3xl" style="color: var(--magenta);">04</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 22c0-5 4-9 9-9 3 0 6 1 8 4"/>
+            <path d="M30 14c0 5-4 9-9 9-3 0-6-1-8-4"/>
+            <circle cx="15" cy="13" r="2"/>
+            <circle cx="21" cy="23" r="2"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight">Relationship Building</h3>
+        <p class="font-body text-sm leading-relaxed mt-auto" style="color: rgba(26,20,16,0.75);">
+          Candidates, clients, customers, teams — trust isn't a tactic. It's earned in small moments, kept over years.
+        </p>
+      </div>
+
+      <!-- 05 Communication Strength -->
+      <div class="tile p-8 lg:p-10 flex flex-col gap-6 min-h-[220px] lg:min-h-[280px]">
+        <div class="flex justify-between items-start">
+          <span class="font-display italic text-3xl" style="color: var(--magenta);">05</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 18c0-5 5-9 12-9s12 4 12 9-5 9-12 9c-1.5 0-3-.2-4.5-.6L8 29l1.5-4.5C7.5 23 6 21 6 18z"/>
+            <circle cx="13" cy="18" r="1" fill="currentColor"/>
+            <circle cx="18" cy="18" r="1" fill="currentColor"/>
+            <circle cx="23" cy="18" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight">Communication</h3>
+        <p class="font-body text-sm leading-relaxed mt-auto" style="color: rgba(26,20,16,0.75);">
+          Clear, warm, direct. Across boardrooms, candidate calls, and client conversations.
+        </p>
+      </div>
+
+      <!-- 06 Practical Execution -->
+      <div class="tile p-8 lg:p-10 flex flex-col gap-6 min-h-[220px] lg:min-h-[280px]">
+        <div class="flex justify-between items-start">
+          <span class="font-display italic text-3xl" style="color: var(--magenta);">06</span>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="18" r="13"/>
+            <path d="M11 18l5 5 10-11"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight">Practical Execution</h3>
+        <p class="font-body text-sm leading-relaxed mt-auto" style="color: rgba(26,20,16,0.75);">
+          Plans are easy. Delivering targets, hiring goals, customer loyalty, and operations — that's the work.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. VENTURES & PROJECTS -->
+  <section id="work" class="py-16 lg:py-36 px-6 lg:px-24" style="background: var(--bone-2);">
+    <div class="grid lg:grid-cols-12 gap-10 mb-16 lg:mb-20 reveal">
+      <div class="lg:col-span-4">
+        <p class="section-tag" style="color: var(--magenta);">— 03 · Ventures</p>
+      </div>
+      <div class="lg:col-span-8">
+        <h2 class="font-display font-medium leading-[0.95] tracking-[-0.025em]" style="font-size: clamp(2.5rem, 6.5vw, 5.5rem);">
+          Where I'm <em class="italic font-normal" style="color: var(--magenta);">building.</em>
+        </h2>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-8 lg:gap-12">
+
+      <!-- Project 1: Jobzio -->
+      <article class="project-card reveal grid lg:grid-cols-12 overflow-hidden">
+        <div class="project-accent lg:col-span-12" style="background: var(--jobzio-red);"></div>
+        <div class="lg:col-span-5 p-8 lg:p-12 flex items-center justify-center" style="background: #fff; min-height: 320px;">
+          <img src="personal_projects/JOBZIO LOGO.jpeg" alt="Jobzio logo — Connecting Talent, Creating Careers" class="max-w-full max-h-72 object-contain">
+        </div>
+        <div class="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center gap-5 border-t lg:border-t-0 lg:border-l" style="border-color: rgba(26,20,16,0.15);">
+          <div class="flex flex-wrap items-baseline gap-4">
+            <span class="section-tag" style="color: var(--jobzio-red);">01 · Active venture</span>
+            <span class="font-display italic text-sm" style="color: rgba(26,20,16,0.55);">Founder &amp; COO</span>
+          </div>
+          <h3 class="font-display font-medium leading-[1.05] tracking-[-0.02em]" style="font-size: clamp(2.25rem, 4vw, 3.75rem); color: var(--jobzio-red);">Jobzio</h3>
+          <p class="font-display italic text-lg lg:text-xl" style="color: rgba(26,20,16,0.85);">"Connecting Talent, Creating Careers."</p>
+          <p class="font-body text-base leading-[1.65] max-w-[55ch]" style="color: rgba(26,20,16,0.78);">
+            A forward-thinking recruitment and staffing firm. We partner with organizations to build high-performing teams and help professionals find roles aligned with their skills and ambitions — blending market insight, technology-enabled sourcing, and personalized evaluation.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Recruitment</span>
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Staffing</span>
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">HR Consulting</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2: Handmade Soap -->
+      <article class="project-card reveal grid lg:grid-cols-12 overflow-hidden">
+        <div class="project-accent lg:col-span-12" style="background: var(--clay);"></div>
+        <div class="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center gap-5 order-2 lg:order-1">
+          <div class="flex flex-wrap items-baseline gap-4">
+            <span class="section-tag" style="color: var(--clay);">02 · Maker venture</span>
+            <span class="font-display italic text-sm" style="color: rgba(26,20,16,0.55);">Founder</span>
+          </div>
+          <h3 class="font-display font-medium leading-[1.05] tracking-[-0.02em]" style="font-size: clamp(2.25rem, 4vw, 3.75rem); color: var(--ink);">Handmade Soap</h3>
+          <p class="font-display italic text-lg lg:text-xl" style="color: rgba(26,20,16,0.85);">Small batch. Honest ingredients.</p>
+          <p class="font-body text-base leading-[1.65] max-w-[55ch]" style="color: rgba(26,20,16,0.78);">
+            An entrepreneurial side venture — formulating, producing, and selling handmade soap. Hands-on operations, customer loyalty, and the discipline of running a real product business end-to-end.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Product</span>
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Craft</span>
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">D2C</span>
+          </div>
+        </div>
+        <div class="lg:col-span-5 grid grid-cols-2 gap-0 order-1 lg:order-2 border-b lg:border-b-0 lg:border-l" style="min-height: 320px; border-color: rgba(26,20,16,0.15);">
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/soap/soap-1.jpg" alt="Handmade artisan soap bars" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/soap/soap-2.jpg" alt="Natural handmade soap" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/soap/soap-3.jpg" alt="Artisan soap collection" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/soap/soap-4.jpg" alt="Handcrafted soap products" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3: Crochet -->
+      <article class="project-card reveal grid lg:grid-cols-12 overflow-hidden">
+        <div class="project-accent lg:col-span-12" style="background: var(--teal);"></div>
+        <div class="lg:col-span-5 grid grid-cols-2 gap-0" style="min-height: 320px;">
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/crochet/slippers.jpeg" alt="Handmade crochet slippers" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/crochet/scarf.jpeg" alt="Handmade crochet teal scarf" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/crochet/top.jpeg" alt="Handmade crochet crop top" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+          <div class="overflow-hidden aspect-square">
+            <img src="assets/crochet/bag.jpeg" alt="Handmade crochet bag" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+          </div>
+        </div>
+        <div class="lg:col-span-7 p-8 lg:p-12 flex flex-col justify-center gap-5 border-t lg:border-t-0 lg:border-l" style="border-color: rgba(26,20,16,0.15);">
+          <div class="flex flex-wrap items-baseline gap-4">
+            <span class="section-tag" style="color: var(--teal);">03 · Creative practice</span>
+            <span class="font-display italic text-sm" style="color: rgba(26,20,16,0.55);">Maker</span>
+          </div>
+          <h3 class="font-display font-medium leading-[1.05] tracking-[-0.02em]" style="font-size: clamp(2.25rem, 4vw, 3.75rem); color: var(--ink);">Crochet Work</h3>
+          <p class="font-display italic text-lg lg:text-xl" style="color: rgba(26,20,16,0.85);">Patience as a practice.</p>
+          <p class="font-body text-base leading-[1.65] max-w-[55ch]" style="color: rgba(26,20,16,0.78);">
+            Scarves, bags, tops, slippers — each piece made by hand, stitch by stitch. A creative practice that keeps the entrepreneurial muscle warm and the focus sharp.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Garments</span>
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Accessories</span>
+            <span class="text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border" style="border-color: rgba(26,20,16,0.2); color: rgba(26,20,16,0.7);">Slow craft</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 5. SELECTED WINS -->
+  <section class="py-16 lg:py-36 px-6 lg:px-24">
+    <div class="grid lg:grid-cols-12 gap-10 mb-16 reveal">
+      <div class="lg:col-span-4">
+        <p class="section-tag" style="color: var(--teal);">— 04 · Track record</p>
+      </div>
+      <div class="lg:col-span-8">
+        <h2 class="font-display font-medium leading-[0.95] tracking-[-0.025em]" style="font-size: clamp(2.5rem, 6.5vw, 5.5rem);">
+          Selected <em class="italic font-normal" style="color: var(--clay);">wins.</em>
+        </h2>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 reveal">
+      <div class="border-t pt-6" style="border-color: var(--ink);">
+        <div class="stat-number" style="color: var(--magenta);">100<span style="color: rgba(26,20,16,0.3); font-size: 0.5em; vertical-align: super;">+</span></div>
+        <p class="section-tag mt-4 mb-1">Employees onboarded</p>
+        <p class="font-body text-xs leading-relaxed" style="color: rgba(26,20,16,0.55);">Across BPO, healthcare &amp; tech roles</p>
+      </div>
+      <div class="border-t pt-6" style="border-color: var(--ink);">
+        <div class="stat-number" style="color: var(--teal);">120<span style="color: rgba(26,20,16,0.3); font-size: 0.5em; vertical-align: super;">%</span></div>
+        <p class="section-tag mt-4 mb-1">Of sales targets</p>
+        <p class="font-body text-xs leading-relaxed" style="color: rgba(26,20,16,0.55);">Achieved consistently, quarter on quarter</p>
+      </div>
+      <div class="border-t pt-6" style="border-color: var(--ink);">
+        <div class="stat-number" style="color: var(--clay);">4<span style="color: rgba(26,20,16,0.3); font-size: 0.5em; vertical-align: super;">+ yrs</span></div>
+        <p class="section-tag mt-4 mb-1">In HR &amp; Sales</p>
+        <p class="font-body text-xs leading-relaxed" style="color: rgba(26,20,16,0.55);">Recruitment, payroll, engagement &amp; client acquisition</p>
+      </div>
+      <div class="border-t pt-6" style="border-color: var(--ink);">
+        <div class="stat-number" style="color: var(--ink);">20<span style="color: rgba(26,20,16,0.3); font-size: 0.5em; vertical-align: super;">%</span></div>
+        <p class="section-tag mt-4 mb-1">Faster time-to-hire</p>
+        <p class="font-body text-xs leading-relaxed" style="color: rgba(26,20,16,0.55);">Reduced via full-cycle recruitment optimisation</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. HOW I WORK -->
+  <section class="py-16 lg:py-36 px-6 lg:px-24 border-y" style="border-color: rgba(26,20,16,0.15);">
+    <div class="reveal mb-16">
+      <p class="section-tag mb-6" style="color: var(--magenta);">— 05 · Method</p>
+      <h2 class="font-display font-medium leading-[0.95] tracking-[-0.025em] max-w-[18ch]" style="font-size: clamp(2.5rem, 6.5vw, 5.5rem);">
+        How I <em class="italic font-normal" style="color: var(--magenta);">work.</em>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 reveal relative">
+      <div class="hidden md:block absolute top-8 left-[16%] right-[16%] h-px" style="background: rgba(31, 111, 122, 0.4);"></div>
+
+      <div class="relative">
+        <div class="step-number text-6xl lg:text-7xl mb-6">01</div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight mb-4">Understand people</h3>
+        <p class="font-body text-base leading-[1.65] max-w-[32ch]" style="color: rgba(26,20,16,0.75);">
+          Ask the real questions. Read the room. Find out what someone actually needs — not what's on paper.
+        </p>
+      </div>
+
+      <div class="relative">
+        <div class="step-number text-6xl lg:text-7xl mb-6">02</div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight mb-4">Build trust</h3>
+        <p class="font-body text-base leading-[1.65] max-w-[32ch]" style="color: rgba(26,20,16,0.75);">
+          Be the person who keeps their word. Trust compounds — and it's the only sustainable shortcut.
+        </p>
+      </div>
+
+      <div class="relative">
+        <div class="step-number text-6xl lg:text-7xl mb-6">03</div>
+        <h3 class="font-display text-2xl lg:text-3xl font-medium leading-tight mb-4">Execute results</h3>
+        <p class="font-body text-base leading-[1.65] max-w-[32ch]" style="color: rgba(26,20,16,0.75);">
+          Outcomes over activity. Hires made, targets hit, customers kept — measurable, repeatedly.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. CONNECT -->
+  <section id="connect" class="py-16 lg:py-44 px-6 lg:px-24 relative overflow-hidden">
+    <!-- Decorative typography -->
+    <div aria-hidden="true" class="absolute -top-6 -left-6 lg:-left-12 font-display italic opacity-[0.06] font-medium leading-none select-none pointer-events-none" style="font-size: clamp(10rem, 25vw, 26rem); color: var(--magenta);">
+      Hello.
+    </div>
+
+    <div class="relative grid lg:grid-cols-12 gap-10 reveal">
+      <div class="lg:col-span-4">
+        <p class="section-tag" style="color: var(--magenta);">— 06 · Connect</p>
+      </div>
+      <div class="lg:col-span-8">
+        <h2 class="font-display font-medium leading-[0.95] tracking-[-0.03em]" style="font-size: clamp(2.75rem, 7.5vw, 6.5rem);">
+          Let's build<br>
+          <em class="italic font-normal" style="color: var(--magenta);">something together.</em>
+        </h2>
+        <p class="font-body text-lg lg:text-xl leading-[1.6] mt-8 max-w-[50ch]" style="color: rgba(26,20,16,0.8);">
+          Hiring, advising, partnerships, or just a conversation about people-first business — I read every message.
+        </p>
+
+        <div class="grid sm:grid-cols-2 gap-6 lg:gap-10 mt-12">
+          <div class="border-t pt-5" style="border-color: var(--ink);">
+            <p class="section-tag mb-3" style="color: rgba(26,20,16,0.6);">Email</p>
+            <a href="mailto:vishakaj91@gmail.com" class="font-display text-xl lg:text-2xl italic u-link inline-block" style="color: var(--ink);">vishakaj91@gmail.com</a>
+          </div>
+          <div class="border-t pt-5" style="border-color: var(--ink);">
+            <p class="section-tag mb-3" style="color: rgba(26,20,16,0.6);">LinkedIn</p>
+            <a href="https://www.linkedin.com/in/vishakhaa-jain-822105220" target="_blank" rel="noopener" class="font-display text-xl lg:text-2xl italic u-link inline-block" style="color: var(--ink);">linkedin.com/in/vishakhaa-jain</a>
+          </div>
+          <div class="border-t pt-5" style="border-color: var(--ink);">
+            <p class="section-tag mb-3" style="color: rgba(26,20,16,0.6);">Based in</p>
+            <p class="font-display text-xl lg:text-2xl italic" style="color: var(--ink);">South Goa, India</p>
+          </div>
+          <div class="border-t pt-5" style="border-color: var(--ink);">
+            <p class="section-tag mb-3" style="color: rgba(26,20,16,0.6);">Currently</p>
+            <p class="font-display text-xl lg:text-2xl italic" style="color: var(--ink);">Building Jobzio</p>
+          </div>
+        </div>
+
+        <div class="mt-12">
+          <a href="mailto:vishakaj91@gmail.com" class="btn-primary inline-flex items-center gap-3 px-8 py-4 text-[12px] uppercase tracking-[0.25em] font-medium">
+            Say hello
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t py-10 px-6 lg:px-24" style="border-color: rgba(26,20,16,0.15);">
+    <div class="grid lg:grid-cols-12 gap-6 items-baseline">
+      <div class="lg:col-span-6">
+        <p class="font-display italic text-lg">Vishakhaa Jain</p>
+        <p class="text-[11px] uppercase tracking-[0.3em] mt-2" style="color: rgba(26,20,16,0.55);">People &amp; Growth Professional · Goa</p>
+      </div>
+      <div class="lg:col-span-3 flex gap-6 text-[11px] uppercase tracking-[0.3em]" style="color: rgba(26,20,16,0.7);">
+        <a href="#work" class="u-link">Work</a>
+        <a href="#about" class="u-link">About</a>
+        <a href="#connect" class="u-link">Connect</a>
+      </div>
+      <div class="lg:col-span-3 lg:text-right text-[11px] uppercase tracking-[0.3em]" style="color: rgba(26,20,16,0.55);">
+        © 2026 · All rights reserved
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll-reveal IntersectionObserver
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // Smooth-scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (ev) => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          const t = document.querySelector(id);
+          if (t) { ev.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
